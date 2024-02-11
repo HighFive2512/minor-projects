@@ -1,1 +1,1 @@
-CContains script solutions or minor projects
+# Contains scripts i have been working
