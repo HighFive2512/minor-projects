@@ -1,0 +1,109 @@
+body {
+    background-color: #002f3f; /* Dark green */
+    color: #fdd401; /* Yellow text */
+    margin: 0;
+    padding: 10px;
+}
+.DashTitle {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center
+}
+.table_title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center
+}
+.app_name {
+    text-align: center;
+}
+.query_title {
+    text-align: center;
+}
+
+.cet-time {
+    text-align: right; /* Align the text to the right */
+    font-size: 24px; /* Increase the font size */
+    margin-right: 20px; /* Add some right margin for spacing */
+    margin-top: 20px; /* Add some top margin for spacing */
+}
+
+
+.title_header {
+    text-align: center; /* Center align the text */
+    margin-bottom: 20px; /* Add some bottom margin for spacing */
+}
+
+.sidebar {
+    width: 15%;
+    padding: 50px;
+    position: fixed; /* Fixed position to keep it on the left */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    height: 100%; /* Occupy full height */
+    overflow-y: auto; /* Add scroll if content exceeds height */
+    background-color: #000; /* Dark green */
+    color: #fff; /* White text */
+    box-sizing: border-box; /* Include padding in width calculation */
+    font-size: 25px;
+    font-weight: bolt;
+}
+
+.container {
+    max-width: 80%; /* Adjust to make space for the sidebar */
+    margin-left: 20%; /* Make space for the sidebar */
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: normal;
+}
+
+
+.sidebar h3 {
+    color: #fff; /* White text */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribute items evenly */
+}
+
+.table-wrapper {
+    width: 48%; /* Two tables per row with a little gap */
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 55px;
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6; /* Lighter border color */
+}
+
+th {
+    background-color: #ffc107; /* Yellow header */
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000;
+}
