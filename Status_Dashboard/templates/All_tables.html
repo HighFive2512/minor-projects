@@ -4,52 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDTPRA Dashboard</title>
-    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-<div class="cet-time"><h2> As of {{ modified_time }} UK Time</h2></div>
+<div class="cet-time"><h3> As of {{ modified_time }} UK Time</h3></div>
 <div class="title_header">
-                <h1>Risk & Analytics Operations Semi-live Dashboard</h1>
-            <h2>Data is refreshed every 5 minutes</h2>
+    <div class="DashTitle"><h1>Risk & Analytics Operations Semi-live Dashboard</h1></div>
+    <h2>Data is refreshed every 5 minutes</h2>
 </div>
-        <div class="sidebar">
-            <h3>Dashboard options</h3>
-            <ul>
-                <li><a href="/dashboard">Welcome Dashboard</a></li>
-                <li><a href="/All_tables">All tables</a></li>
-            </ul>
-        </div>
-    <div class="container">
-
-        <div class="content">
-            <!-- Iterate over each table -->
-            {% for table in tables %}
-            <div class="table-wrapper">
-                <div class="query_title"><h2>{{ table[0]|first }}</h2></div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            {% for header in table[1]|splitpart() %}
-                            <th>{{ header }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Iterate over each row -->
-                        {% for row in table[2:] %}
-                        <tr>
-                            <!-- Iterate over each column value -->
-                            {% for column in row|splitpart() %}
-                            <td>{{ column }}</td>
-                            {% endfor %}
-                        </tr>
+<div class="sidebar">
+    <h3>Dashboard</h3>
+    <ul>
+        <li><a href="/dashboard">Welcome Dashboard</a></li>
+        <li><a href="/All_tables">All tables</a></li>
+    </ul>
+</div>
+<div class="container">
+    {% for application in applications %}
+    <div class="application_title"><h1>{{ application }}</h1></div>
+    <div class="flex-container">
+        {% for table in tables %}
+        {% if application in table[0]|first %}
+        <div class="table-wrapper">
+            <div class="query_title"><h2>{{ table[0]|split_header }}</h2></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% for header in table[1]|splitpart() %}
+                        <th>{{ header }}</th>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table[2:] %}
+                    <tr>
+                        {% for column in row|splitpart() %}
+                        <td>{{ column }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        {% endif %}
+        {% endfor %}
     </div>
+    {% endfor %}
+</div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 import re
-import datetime  # Import datetime module for getting the current time
+import datetime
 
 app = Flask(__name__)
 

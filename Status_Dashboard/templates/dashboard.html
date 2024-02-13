@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDTPRA Dashboard</title>
-    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
@@ -18,46 +17,45 @@
     <ul>
         <li><a href="/dashboard">Welcome Dashboard</a></li>
         <li><a href="/All_tables">All tables</a></li>
+        <div class="separate_apps">
+        <li>Individual applications:</li>
+        {% for application in applications %}
+        <li><a href="/{{ application }}">{{ application }}</a>
+        {% endfor %}
+        </div>
     </ul>
 </div>
 <div class="container">
-    <div class="content">
-        <div class="flex-container">
-            {% for application in applications %}
-            <div class="table-wrapper">
-                <div class="table_title"><h1>{{ application }}</h1></div>
-                {% for table in tables %}
-                {% if application in table[0]|first %}
-                <div class="query_title"><h2>{{ table[0]|split_header }}</h2></div>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            {% for header in table[1]|splitpart() %}
-                            <th>{{ header }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Iterate over each row -->
-                        {% for row in table[2:] %}
-                        <tr>
-                            <!-- Iterate over each column value -->
-                            {% for column in row|splitpart() %}
-                            <td>{{ column }}</td>
-                            {% endfor %}
-                        </tr>
+    {% for application in applications %}
+    <div class="application_title"><h1>{{ application }}</h1></div>
+    <div class="flex-container">
+        {% for table in tables %}
+        {% if application in table[0]|first %}
+        <div class="table-wrapper">
+            <div class="query_title"><h2>{{ table[0]|split_header }}</h2></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% for header in table[1]|splitpart() %}
+                        <th>{{ header }}</th>
                         {% endfor %}
-                    </tbody>
-
-                </table>
-                {% endif %}
-                {% endfor %}
-            </div>
-            {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table[2:] %}
+                    <tr>
+                        {% for column in row|splitpart() %}
+                        <td>{{ column }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        {% endif %}
+        {% endfor %}
     </div>
+    {% endfor %}
 </div>
-
 </body>
 </html>

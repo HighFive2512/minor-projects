@@ -1,109 +1,163 @@
 body {
-    background-color: #002f3f; /* Dark green */
-    color: #fdd401; /* Yellow text */
+    background-color: #002f3f;
+    color: #fdd401;
     margin: 0;
     padding: 10px;
 }
+
 .DashTitle {
     font-size: 26px;
     font-weight: bold;
-    text-align: center
+    text-align: center;
 }
+
 .table_title {
     font-size: 24px;
     font-weight: bold;
-    text-align: center
+    text-align: center;
 }
+
 .app_name {
     text-align: center;
 }
+
 .query_title {
     text-align: center;
+    margin-right: 200px;
 }
 
 .cet-time {
-    text-align: right; /* Align the text to the right */
-    font-size: 24px; /* Increase the font size */
-    margin-right: 20px; /* Add some right margin for spacing */
-    margin-top: 20px; /* Add some top margin for spacing */
+    text-align: right;
+    font-size: 24px;
+    margin-right: 20px;
+    margin-top: 20px;
 }
-
 
 .title_header {
-    text-align: center; /* Center align the text */
-    margin-bottom: 20px; /* Add some bottom margin for spacing */
-}
-
-.sidebar {
-    width: 15%;
-    padding: 50px;
-    position: fixed; /* Fixed position to keep it on the left */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    height: 100%; /* Occupy full height */
-    overflow-y: auto; /* Add scroll if content exceeds height */
-    background-color: #000; /* Dark green */
-    color: #fff; /* White text */
-    box-sizing: border-box; /* Include padding in width calculation */
-    font-size: 25px;
-    font-weight: bolt;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-left: 50px;
 }
 
 .container {
-    max-width: 80%; /* Adjust to make space for the sidebar */
-    margin-left: 20%; /* Make space for the sidebar */
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 10%;
 }
 
-.content {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: normal;
-}
-
-
-.sidebar h3 {
-    color: #fff; /* White text */
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar li {
-    margin-bottom: 10px;
-}
-
-.sidebar a {
-    text-decoration: none;
-    color: #fff;
+.application_title {
+    text-align: center;
 }
 
 .flex-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribute items evenly */
+    justify-content: space-between;
 }
 
 .table-wrapper {
-    width: 48%; /* Two tables per row with a little gap */
-    margin-bottom: 20px;
+    width: calc(45% - 25px);
 }
 
 .table {
     width: 100%;
-    margin-bottom: 55px;
+    border-collapse: collapse;
 }
-th, td {
-    padding: 12px;
+
+.table th,
+.table td {
+    padding: 8px;
+    border: 1px solid #ddd;
     text-align: left;
-    border-bottom: 1px solid #dee2e6; /* Lighter border color */
+    border-bottom: 1px solid #dee2e6;
 }
 
 th {
-    background-color: #ffc107; /* Yellow header */
+    background-color: #ffc107;
     font-weight: bold;
     text-transform: uppercase;
     color: #000;
+}
+
+.table td {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 768px) {
+    .table-wrapper {
+        width: 100%;
+    }
+}
+
+.separate_apps li {
+    margin-right: 100%;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar {
+    background-color: #2c3e50;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 12%;
+    padding: 60px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 1;
+    font-size: 21px;
+    font-weight: bold;
+    transition: width 0.5s;
+    color: #fff;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 25px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #999;
+}
+
+.separate_apps {
+    margin-top: 220px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #34495e;
+}
+
+.closebtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 36px;
+    cursor: pointer;
+    color: #fff;
+    z-index: 2;
+}
+
+.closebtn:hover {
+    color: #f39c12;
 }
