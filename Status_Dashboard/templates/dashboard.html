@@ -7,23 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+<div class="top-navbar">
+    <ul>
+        <li><a href="/dashboard">Welcome Dashboard</a></li>
+        <li><a href="/All_tables">All tables</a></li>
+    </ul>
+</div>
 <div class="cet-time"><h3> As of {{ modified_time }} UK Time</h3></div>
 <div class="title_header">
     <div class="DashTitle"><h1>Risk & Analytics Operations Semi-live Dashboard</h1></div>
     <h2>Data is refreshed every 5 minutes</h2>
-</div>
-<div class="sidebar">
-    <h3>Dashboard</h3>
-    <ul>
-        <li><a href="/dashboard">Welcome Dashboard</a></li>
-        <li><a href="/All_tables">All tables</a></li>
-        <div class="separate_apps">
-        <li>Individual applications:</li>
-        {% for application in applications %}
-        <li><a href="/{{ application }}">{{ application }}</a>
-        {% endfor %}
-        </div>
-    </ul>
 </div>
 <div class="container">
     {% for application in applications %}
