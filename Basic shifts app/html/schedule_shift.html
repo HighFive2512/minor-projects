@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block title %}Schedule Shift{% endblock %}
+
+{% block content %}
+<h1>Schedule a New Shift</h1>
+<form action="{{ url_for('schedule_shift') }}" method="POST">
+    <label for="member_id">Select Team Member:</label><br>
+    <select name="member_id" required>
+        {% for member in team_members %}
+        <option value="{{ member[0] }}">{{ member[1] }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="shift_date">Shift Date:</label><br>
+    <input type="date" name="shift_date" required><br><br>
+
+    <label for="shift_type">Shift Type:</label><br>
+    <input type="text" name="shift_type" placeholder="Morning, Evening, etc." required><br><br>
+
+    <button type="submit">Schedule Shift</button>
+</form>
+
+<div class="button-container">
+    <a href="{{ url_for('view_shifts') }}">View Scheduled Shifts</a>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</div>
+{% endblock %}

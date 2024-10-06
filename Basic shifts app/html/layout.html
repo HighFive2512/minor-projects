@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<!-- In html/layout.html -->
+<!-- In html/layout.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Shift Scheduler{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fullcalendar.min.css') }}">
+    <script src="{{ url_for('static', filename='js/index.global.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+    
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridWeek',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridWeek,dayGridMonth'
+                },
+                events: '/get_events',
+
+    
+                eventDidMount: function(info) {
+                    // Customize each event's display to include team member info
+                    let eventTitle = info.event.title;
+                    let memberName = info.event.extendedProps.memberName;
+                    let shiftType = info.event.extendedProps.shiftType; // Get the shift type
+                    info.el.querySelector('.fc-event-title').innerHTML = `${eventTitle} (${memberName})`;
+    
+                    // Add classes based on shift type
+                    if (shiftType === "Morning") {
+                        info.el.classList.add('shift-morning');
+                        info.el.style.backgroundColor = 'hotpink';
+                    } else if (shiftType === "Late") {
+                        info.el.classList.add('shift-late');
+                        info.el.style.backgroundColor = 'darkcyan';
+                    } else if (shiftType === "Holiday") {
+                        info.el.classList.add('shift-late');
+                        info.el.style.backgroundColor = 'yellow';
+                    } else {
+                        info.el.classList.add('shift-default');
+                        info.el.style.backgroundColor = 'peru';
+                    }
+                },
+    
+                // Customize how events are displayed
+                eventContent: function(arg) {
+                    // Display team member name and event type in event block
+                    let customHtml = `<div class="fc-event-title">${arg.event.title}</div>`;
+                    return { html: customHtml };
+                }
+            });
+    
+            calendar.render(); // Render the calendar
+        });
+    </script>
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('view_team_members') }}">Team Members</a>
+        <a href="{{ url_for('add_member') }}">Add Member</a>
+        <a href="{{ url_for('schedule_shift') }}">Schedule Shift</a>
+        <a href="{{ url_for('view_shifts') }}">View Shifts</a>
+    </div>
+
+    <!-- Content block to be filled by individual pages -->
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

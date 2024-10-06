@@ -1,0 +1,108 @@
+#calendar {
+    margin: 40px auto;
+    height: 1200px;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+input, select {
+    margin: 5px 0 15px;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+body {
+    background-color: #1c3a3e;
+    color: #b7ca64;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #f7e03c;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #dbd95d;
+}
+
+th {
+    background-color: #244d57;
+    color: #f7e03c;
+}
+
+tr:nth-child(even) {
+    background-color: #294d4e;
+}
+
+tr:hover {
+    background-color: #3b6e70;
+}
+
+a {
+    text-decoration: none;
+    color: #f7e03c;
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 10px 0;
+    border-radius: 4px;
+    background-color: #244d57;
+}
+
+a:hover {
+    background-color: #3b6e70;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.navbar {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.navbar a {
+    margin: 0 15px;
+    font-size: 25px;
+}
+
+.fc-event {
+    position: relative;
+    width: 70%;
+    transform: translateX(20%);
+    height: 60px;
+
+}
+
+.fc-event.shift-morning {
+    transform: translateX(0%);
+}
+
+.fc-event.shift-late {
+    transform: translateX(40%);
+}

@@ -1,0 +1,33 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}View Team Members{% endblock %}
+
+{% block content %}
+<h1>Team Members</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Actions</th> 
+    </tr>
+    {% for member in team_members %}
+    <tr>
+        <td>{{ member[0] }}</td> 
+        <td>{{ member[1] }}</td> 
+        <td>{{ member[2] }}</td> 
+        <td>
+            <form action="{{ url_for('delete_member', member_id=member[0]) }}" method="POST" style="display:inline;">
+                <button type="submit" style="background-color: #13100f; color: white; border: none; padding: 8px 12px; cursor: pointer;">Delete</button>
+            </form>            
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="button-container">
+    <a href="{{ url_for('add_member') }}">Add New Member</a>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</div>
+{% endblock %}
