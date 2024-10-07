@@ -96,13 +96,21 @@ a:hover {
     width: 70%;
     transform: translateX(20%);
     height: 60px;
+    font-size: 50px;
 
 }
 
 .fc-event.shift-morning {
     transform: translateX(0%);
+    font-size:25px;
+    
 }
 
 .fc-event.shift-late {
-    transform: translateX(40%);
+    transform: translateX(43%);
+    font-size:25px;
+}
+
+.fc-event.shift-default {
+    font-size:25px;
 }
