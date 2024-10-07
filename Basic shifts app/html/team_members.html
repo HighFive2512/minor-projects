@@ -1,10 +1,11 @@
-
 {% extends 'layout.html' %}
 
-{% block title %}View Team Members{% endblock %}
+{% block title %}Team Members{% endblock %}
 
 {% block content %}
 <h1>Team Members</h1>
+
+<!-- Table to display existing team members -->
 <table>
     <tr>
         <th>ID</th>
@@ -26,8 +27,24 @@
     {% endfor %}
 </table>
 
+<!-- Form to add a new team member -->
+<h2>Add Team Member</h2>
+<form method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role" required>
+        <option value="" disabled selected>Select Role</option> <!-- Placeholder -->
+        <option value="Ops">Ops</option>
+        <option value="Dev">Dev</option>
+        <option value="Mgmt">Mgmt</option>
+    </select><br>
+
+    <input type="submit" value="Add Member">
+</form>
+
 <div class="button-container">
-    <a href="{{ url_for('add_member') }}">Add New Member</a>
     <a href="{{ url_for('index') }}">Back to Home</a>
 </div>
 {% endblock %}

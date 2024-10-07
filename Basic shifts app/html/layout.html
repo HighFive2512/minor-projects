@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/fullcalendar.min.css') }}">
     <script src="{{ url_for('static', filename='js/index.global.min.js') }}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
@@ -68,9 +70,8 @@
     <!-- Navigation bar -->
     <div class="navbar">
         <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('view_team_members') }}">Team Members</a>
-        <a href="{{ url_for('add_member') }}">Add Member</a>
         <a href="{{ url_for('schedule_shift') }}">Schedule Shift</a>
+        <a href="{{ url_for('manage_team_members') }}">Back to Team Members</a>
         <a href="{{ url_for('view_shifts') }}">View Shifts</a>
     </div>
 

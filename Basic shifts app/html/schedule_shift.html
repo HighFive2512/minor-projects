@@ -4,25 +4,62 @@
 
 {% block content %}
 <h1>Schedule a New Shift</h1>
-<form action="{{ url_for('schedule_shift') }}" method="POST">
+<form action="{{ url_for('schedule_shift') }}" method="POST" id="shift-form" onsubmit="return validateForm()">
     <label for="member_id">Select Team Member:</label><br>
     <select name="member_id" required>
         {% for member in team_members %}
-        <option value="{{ member[0] }}">{{ member[1] }}</option>
+            <option value="{{ member[0] }}">{{ member[1] }}</option>
         {% endfor %}
     </select><br><br>
 
-    <label for="shift_date">Shift Date:</label><br>
-    <input type="date" name="shift_date" required><br><br>
+    <label for="shift_dates">Select Date Range:</label><br>
+    <input type="text" id="shift_dates" name="shift_dates" placeholder="Select date range" required readonly><br><br>
 
     <label for="shift_type">Shift Type:</label><br>
-    <input type="text" name="shift_type" placeholder="Morning, Evening, etc." required><br><br>
+    <select name="shift_type" required>
+        <option value="">Select Shift Type</option>
+        <option value="Early">Early</option>
+        <option value="Late">Late</option>
+        <option value="Holiday">Holiday</option>
+        <option value="Normal">Normal</option>
+    </select><br><br>
 
-    <button type="submit">Schedule Shift</button>
+    <button type="submit">Schedule Shifts</button>
 </form>
 
 <div class="button-container">
     <a href="{{ url_for('view_shifts') }}">View Scheduled Shifts</a>
     <a href="{{ url_for('index') }}">Back to Home</a>
 </div>
+
+<script>
+    let selectedDates = [];
+
+    // Initialize Flatpickr
+    flatpickr("#shift_dates", {
+        mode: "range",
+        dateFormat: "Y-m-d", // Format for the input
+        
+        onClose: function(dates) {
+            selectedDates = dates; // Store selected dates
+            // Set the input value only if two dates are selected
+            if (dates.length === 2) {
+                let start = dates[0].toISOString().split('T')[0]; // Get start date
+                let end = dates[1].toISOString().split('T')[0]; // Get end date
+                document.getElementById('shift_dates').value = `${start} to ${end}`;
+            } else {
+                document.getElementById('shift_dates').value = ''; // Clear if not two dates
+            }
+        }
+    });
+
+    function validateForm() {
+        // Ensure that two dates are selected
+        if (selectedDates.length !== 2) {
+            alert("Please select a complete date range.");
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
 {% endblock %}

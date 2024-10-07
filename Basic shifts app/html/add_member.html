@@ -1,14 +1,21 @@
 {% extends 'layout.html' %}
 
-{% block title %}All shifts{% endblock %}
+{% block title %}Add Team Member{% endblock %}
 
 {% block content %}
     <h1>Add Team Member</h1>
     <form method="POST">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br>
+
         <label for="role">Role:</label>
-        <input type="text" id="role" name="role" required><br>
+        <select id="role" name="role" required>
+            <option value="" disabled selected>Select Role</option> <!-- Placeholder -->
+            <option value="Ops">Ops</option>
+            <option value="Dev">Dev</option>
+            <option value="Mgmt">Mgmt</option>
+        </select><br>
+
         <input type="submit" value="Add Member">
     </form>
     <a href="{{ url_for('view_team_members') }}">Back to Team Members</a>
