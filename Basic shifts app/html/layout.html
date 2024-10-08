@@ -6,9 +6,9 @@
     <title>{% block title %}Shift Scheduler{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/fullcalendar.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flatpickr.css') }}">
     <script src="{{ url_for('static', filename='js/index.global.min.js') }}"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ url_for('static', filename='js/flatpickr.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
@@ -30,19 +30,14 @@
 
                     if (shiftType === "Early") {
                         info.el.classList.add('shift-early');
-                        info.el.style.backgroundColor = 'green';
                     } else if (shiftType === "Late") {
                         info.el.classList.add('shift-late');
-                        info.el.style.backgroundColor = 'mediumpurple';
                     } else if (shiftType === "Normal") {
                         info.el.classList.add('shift-normal');
-                        info.el.style.backgroundColor = 'dodgerblue';
                     } else if (shiftType === "Holiday") {
                         info.el.classList.add('shift-holiday');
-                        info.el.style.backgroundColor = 'gray';
                     } else {
                         info.el.classList.add('shift-OOO');
-                        info.el.style.backgroundColor = 'black';
                     }
                 },
 
@@ -55,23 +50,6 @@
             calendar.render();
         });
     </script>
-    <style>
-        .agenda {
-            display: flex; /* Use Flexbox */
-            justify-content: center; /* Center content horizontally */
-            margin-top: 20px; /* Space above the agenda */
-        }
-
-        .agenda .agenda-point {
-            margin: 0 15px; /* Space between points */
-            display: flex;
-            align-items: center; /* Center items vertically */
-        }
-
-        .agenda .agenda-point span {
-            margin-right: 5px; /* Space between dot and text */
-        }
-    </style>
 </head>
 <body>
     <div class="navbar">

@@ -44,24 +44,17 @@
     {% endfor %}
 </select>
 
-<div id="calendar"></div>
-
 <div class="agenda">
     <div class="agenda-point">
-        <span style="color: green;">&#9679;</span> Early Shift (06-15 UKT)
-    </div>
+        <span style="color: green;">&#9679;</span> Early Shift (06-15 UKT)</div>
     <div class="agenda-point">
-        <span style="color: mediumpurple;">&#9679;</span> Late Shift (10-19 UKT)
-    </div>
+        <span style="color: mediumpurple;">&#9679;</span> Late Shift (10-19 UKT)</div>
     <div class="agenda-point">
-        <span style="color: dodgerblue;">&#9679;</span> Normal Shift 
-    </div>
+        <span style="color: dodgerblue;">&#9679;</span> Normal Shift</div>
     <div class="agenda-point">
-        <span style="color: gray;">&#9679;</span> National Holiday
-    </div>
+        <span style="color: gray;">&#9679;</span> National Holiday</div>
     <div class="agenda-point">
-        <span style="color: rgb(0, 0, 0);">&#9679;</span> Out of Office
-    </div>
+        <span style="color: rgb(0, 0, 0);">&#9679;</span> Out of Office</div>
 </div>
 <p></p>
 <div id="calendar"></div>
@@ -69,7 +62,6 @@
 <script>
     let selectedDates = [];
 
-    // Initialize the date picker
     flatpickr("#shift_dates", {
         mode: "range",
         dateFormat: "Y-m-d",
@@ -85,7 +77,6 @@
         }
     });
 
-    // Form validation
     function validateForm() {
         if (selectedDates.length !== 2) {
             alert("Please select a complete date range.");
@@ -97,7 +88,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
-        // Initialize the FullCalendar
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridWeek',
             headerToolbar: {
@@ -118,44 +108,53 @@
                     }{% if not loop.last %},{% endif %}
                 {% endfor %}
             ],
-        )};
+            eventDidMount: function(info) {
+                let shiftType = info.event.extendedProps.shiftType;
+                info.el.classList.add('shift-default');
+                if (shiftType === "Early") {
+                    info.el.classList.add('shift-early');
+                } else if (shiftType === "Late") {
+                    info.el.classList.add('shift-late');
+                }
+            },
+        });
 
-        // Render the calendar
         calendar.render();
 
-        // Role filter functionality
-        const roleFilter = document.getElementById('role');
-        roleFilter.addEventListener('change', function() {
-            const selectedRole = this.value;
+        
+        document.getElementById('role').addEventListener('change', function() {
+    var selectedRole = this.value;
 
-            // Clear existing events
-            calendar.removeAllEvents();
+    calendar.removeAllEvents();
 
-            // Add filtered events based on the selected role
-            {% for shift in shifts %}
-                {% if selectedRole == "" or selectedRole == '{{ shift[4] }}' %}
-                    calendar.addEvent({
-                        id: '{{ shift[0] }}',
-                        title: '{{ shift[1] }} - {{ shift[3] }}',
-                        start: '{{ shift[2] }}',
-                        extendedProps: {
-                            shiftType: '{{ shift[3] }}',
-                            role: '{{ shift[4] }}'
-                        }
-                    });
-                {% endif %}
-            {% endfor %}
-        });
-
-        // Event listener for form submission
-        const form = document.getElementById('yourFormId'); // Change 'yourFormId' to the actual form ID
-        form.addEventListener('submit', function(event) {
-            if (!validateForm()) {
-                event.preventDefault(); // Prevent form submission if validation fails
+    {% for shift in shifts %}
+        if (selectedRole === "" || "{{ shift[4] }}" === selectedRole) {
+            let event = calendar.addEvent({
+                id: '{{ shift[0] }}',
+                title: '{{ shift[1] }} - {{ shift[3] }}',
+                start: '{{ shift[2] }}',
+                extendedProps: {
+                    shiftType: '{{ shift[3] }}',
+                    role: '{{ shift[4] }}'
+                }
+            });
+            
+            let shiftType = '{{ shift[3] }}';
+            if (shiftType === "Early") {
+                event.setProp('classNames', ['shift-early']);
+            } else if (shiftType === "Late") {
+                event.setProp('classNames', ['shift-late']);
+            } else if (shiftType === "Normal") {
+                event.setProp('classNames', ['shift-normal']);
+            } else if (shiftType === "Holiday") {
+                event.setProp('classNames', ['shift-holiday']);
+            } else if (shiftType === "OOO") {
+                event.setProp('classNames', ['shift-ooo']);
             }
-        });
+        }
+    {% endfor %}
+});
+
     });
 </script>
-
-
 {% endblock %}

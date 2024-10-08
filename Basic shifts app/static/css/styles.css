@@ -147,36 +147,42 @@ a:hover {
 }
 
 .fc-event-title {
-    font-size: 13px;
-    color: white; 
-    line-height: 1.2;
+    font-size: 14px;
+    color: white;
 }
 
 .fc-event {
     position: relative;
     width: 70%;
-    height: 50px;
+    height: 40px;
+    padding: 2px 5px; 
 }
 
 .fc-event.shift-early {
+    background-color: green;
     transform: translateX(0%);
-    
 }
-
 .fc-event.shift-late {
+    background-color: mediumpurple;
     transform: translateX(42%);
 }
+.fc-event.shift-normal {
+    background-color: dodgerblue;
+    transform: translateX(20%);
+}
 
-.fc-event.shift-holiday,
-.fc-event.shift-OOO {
+
+.fc-event.shift-holiday {
+    background-color: gray;
     transform: translateX(-1%);
     width: 100%;
 }
 
-.fc-event.shift-normal {
-    transform: translateX(20%);
+.fc-event.shift-OOO {
+    background-color: black;
+    transform: translateX(-1%);
+    width: 100%;
 }
-
 .navbar {
     text-align: center;
     margin-bottom: 20px;
