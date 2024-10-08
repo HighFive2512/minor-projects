@@ -43,6 +43,9 @@
         <option value="{{ role[0] }}">{{ role[0] }}</option>
     {% endfor %}
 </select>
+
+<div id="calendar"></div>
+
 <div class="agenda">
     <div class="agenda-point">
         <span style="color: green;">&#9679;</span> Early Shift (06-15 UKT)
@@ -66,6 +69,7 @@
 <script>
     let selectedDates = [];
 
+    // Initialize the date picker
     flatpickr("#shift_dates", {
         mode: "range",
         dateFormat: "Y-m-d",
@@ -81,6 +85,7 @@
         }
     });
 
+    // Form validation
     function validateForm() {
         if (selectedDates.length !== 2) {
             alert("Please select a complete date range.");
@@ -92,6 +97,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
+        // Initialize the FullCalendar
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridWeek',
             headerToolbar: {
@@ -112,19 +118,44 @@
                     }{% if not loop.last %},{% endif %}
                 {% endfor %}
             ],
-            eventDidMount: function(info) {
-                let shiftType = info.event.extendedProps.shiftType;
-                info.el.classList.add('shift-default');
-                if (shiftType === "Early") {
-                    info.el.classList.add('shift-early');
-                } else if (shiftType === "Late") {
-                    info.el.classList.add('shift-late');
-                }
-            },
-        });
+        )};
 
+        // Render the calendar
         calendar.render();
 
+        // Role filter functionality
+        const roleFilter = document.getElementById('role');
+        roleFilter.addEventListener('change', function() {
+            const selectedRole = this.value;
+
+            // Clear existing events
+            calendar.removeAllEvents();
+
+            // Add filtered events based on the selected role
+            {% for shift in shifts %}
+                {% if selectedRole == "" or selectedRole == '{{ shift[4] }}' %}
+                    calendar.addEvent({
+                        id: '{{ shift[0] }}',
+                        title: '{{ shift[1] }} - {{ shift[3] }}',
+                        start: '{{ shift[2] }}',
+                        extendedProps: {
+                            shiftType: '{{ shift[3] }}',
+                            role: '{{ shift[4] }}'
+                        }
+                    });
+                {% endif %}
+            {% endfor %}
+        });
+
+        // Event listener for form submission
+        const form = document.getElementById('yourFormId'); // Change 'yourFormId' to the actual form ID
+        form.addEventListener('submit', function(event) {
+            if (!validateForm()) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
     });
 </script>
+
+
 {% endblock %}
