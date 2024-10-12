@@ -1,178 +1,217 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Schedule Shift{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Scheduler</title>
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fullcalendar.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flatpickr.css') }}">
+    <script src="{{ url_for('static', filename='js/index.global.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/flatpickr.js') }}"></script>
+</head>
 
-{% block content %}
-<button type="button" class="collapsible">Schedule Shift</button>
-<div class = "collapsed_menu">
-<h2>Schedule a New Shift</h2>
-<form action="{{ url_for('schedule_and_view_shifts') }}" method="POST" id="shift-form" onsubmit="return validateForm()">
-    <div class="form-container">
-        <div class="form-group">
-            <label for="member_id">Team Member:</label>
-            <select name="member_id" required>
-                {% for member in team_members %}
-                    <option value="{{ member[0] }}">{{ member[1] }}</option>
-                {% endfor %}
-            </select>
-        </div>
+<body>
+    <div class="collapsed_block">
+        <button type="button" class="collapsible">Schedule Shift</button>
+        <div class="collapsed_menu"><br>
+            <h3>Schedule a New Shift</h3>
+            <form action="{{ url_for('schedule_and_view_shifts') }}" method="POST" id="shift-form" onsubmit="return validateForm()">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="member_id">Team Member:</label>
+                        <select name="member_id" required>
+                            {% for member in team_members %}
+                                <option value="{{ member[0] }}">{{ member[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-        <div class="form-group">
-            <label for="shift_dates">Date Range:</label>
-            <input type="text" id="shift_dates" name="shift_dates" placeholder="Select date range" required readonly>
-        </div>
+                    <div class="form-group">
+                        <label for="shift_dates">Date Range:</label>
+                        <input type="text" id="shift_dates" name="shift_dates" placeholder="Select date range" required readonly>
+                    </div>
 
-        <div class="form-group">
-            <label for="shift_type">Shift Type:</label>
-            <select name="shift_type" required>
-                <option value="">Select Shift Type</option>
-                <option value="Early">Early</option>
-                <option value="Late">Late</option>
-                <option value="Normal">Normal</option>
-                <option value="Holiday">Holiday</option>
-                <option value="OOO">Out of office</option>
-            </select>
+                    <div class="form-group">
+                        <label for="shift_type">Shift Type:</label>
+                        <select name="shift_type" required>
+                            <option value="">Select Shift Type</option>
+                            <option value="Early">Early</option>
+                            <option value="Late">Late</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Holiday">Holiday</option>
+                            <option value="OOO">Out of office</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="submit-btn">Schedule Shifts</button>
+                </div><br><br>
+            </form>
         </div>
     </div>
-    <div class="button-container">
-        <button type="submit" class="submit-btn">Schedule Shifts</button>
+
+    <div class="collapsed_block">
+        <button type="button" class="collapsible">Add or Remove Team Members</button>
+        <div class="collapsed_table_menu"><br>
+            <h3>Team Members</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in team_members %}
+                    <tr>
+                        <td>{{ member[1] }}</td>
+                        <td>{{ member[2] }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_member', member_id=member[0]) }}" method="POST" style="display:inline;">
+                                <button type="submit" style="background-color: #13100f; color: white; border: none; padding: 8px 12px; cursor: pointer;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>Add Team Member</h3>
+            <form action="{{ url_for('manage_team_members') }}" method="POST" class="add-member-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="role_add">Role:</label>
+                    <select id="role_add" name="role" required class="role_dropdown">
+                        <option value="" disabled selected>Select Role</option>
+                        <option value="Ops">Ops</option>
+                        <option value="Dev">Dev</option>
+                        <option value="Mgmt">Mgmt</option>
+                    </select>
+                </div>
+                <div class="button-container">
+                    <input type="submit" value="Add Member" class="submit-btn">
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-</form>
-<label for="role">Filter by Role:</label>
-<select name="role" id="role" class="role_dropdown">
-    <option value="">All Roles</option>
-    {% for role in roles %}
-        <option value="{{ role[0] }}">{{ role[0] }}</option>
-    {% endfor %}
-</select>
+    <div class="filter-role-container">
+        <label for="role">Filter by Role:</label>
+        <select name="role" id="role" class="filter_role_dropdown">
+            <option value="">All Roles</option>
+            {% for role in roles %}
+                <option value="{{ role[0] }}">{{ role[0] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="agenda">
+        <div class="agenda-point">
+            <span style="color: green;">&#9679;</span> Early Shift (06-15 UKT)
+        </div>
+        <div class="agenda-point">
+            <span style="color: mediumpurple;">&#9679;</span> Late Shift (10-19 UKT)
+        </div>
+        <div class="agenda-point">
+            <span style="color: dodgerblue;">&#9679;</span> Normal Shift
+        </div>
+        <div class="agenda-point">
+            <span style="color: gray;">&#9679;</span> National Holiday
+        </div>
+        <div class="agenda-point">
+            <span style="color: rgb(0, 0, 0);">&#9679;</span> Out of Office
+        </div>
+    </div><br><br>
 
-<div class="agenda">
-    <div class="agenda-point">
-        <span style="color: green;">&#9679;</span> Early Shift (06-15 UKT)</div>
-    <div class="agenda-point">
-        <span style="color: mediumpurple;">&#9679;</span> Late Shift (10-19 UKT)</div>
-    <div class="agenda-point">
-        <span style="color: dodgerblue;">&#9679;</span> Normal Shift</div>
-    <div class="agenda-point">
-        <span style="color: gray;">&#9679;</span> National Holiday</div>
-    <div class="agenda-point">
-        <span style="color: rgb(0, 0, 0);">&#9679;</span> Out of Office</div>
-</div>
-<p></p>
-<div id="calendar"></div>
+    <div id="calendar" class="my-calendar"></div>
 
-<script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-        content.style.display = "none";
-        } else {
-        content.style.display = "block";
-        }
-    });
-    }
-    let selectedDates = [];
-
-    flatpickr("#shift_dates", {
-        mode: "range",
-        dateFormat: "Y-m-d",
-        onClose: function(dates) {
-            selectedDates = dates;
-            if (dates.length === 2) {
-                let start = dates[0].toISOString().split('T')[0];
-                let end = dates[1].toISOString().split('T')[0];
-                document.getElementById('shift_dates').value = `${start} to ${end}`;
-            } else {
-                document.getElementById('shift_dates').value = '';
+    <script>
+        function getShiftClass(shiftType) {
+            switch (shiftType) {
+                case "Early": return 'shift-early';
+                case "Late": return 'shift-late';
+                case "Normal": return 'shift-normal';
+                case "Holiday": return 'shift-holiday';
+                case "OOO": return 'shift-OOO';
+                default: return '';
             }
         }
-    });
 
-    function validateForm() {
-        if (selectedDates.length !== 2) {
-            alert("sElect a date range.");
-            return false;
-        }
-        return true;
-    }
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridWeek,dayGridMonth'
+                },
+                events: '/manage_team_members?data=events',
+                eventDidMount: function (info) {
+                    let memberName = info.event.extendedProps.memberName;
+                    let shiftType = info.event.extendedProps.shiftType;
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridWeek',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridWeek,dayGridMonth'
-            },
-            events: [
-                {% for shift in shifts %}
-                    {
-                        id: '{{ shift[0] }}',
-                        title: '{{ shift[1] }} - {{ shift[3] }}',
-                        start: '{{ shift[2] }}',
-                        extendedProps: {
-                            shiftType: '{{ shift[3] }}',
-                            role: '{{ shift[4] }}'
-                        }
-                    }{% if not loop.last %},{% endif %}
-                {% endfor %}
-            ],
-            eventDidMount: function(info) {
-                let shiftType = info.event.extendedProps.shiftType;
-                info.el.classList.add('shift-default');
-                if (shiftType === "Early") {
-                    info.el.classList.add('shift-early');
-                } else if (shiftType === "Late") {
-                    info.el.classList.add('shift-late');
-                }
-            },
-        });
+                    //insert the membername and role into the corresponding bar in the cale
+                    info.el.querySelector('.fc-event-title').innerHTML = `<div>${memberName}</div><div>${shiftType}</div>`;
 
-        calendar.render();
-
-        
-        document.getElementById('role').addEventListener('change', function() {
-    var selectedRole = this.value;
-
-    calendar.removeAllEvents();
-
-    {% for shift in shifts %}
-        if (selectedRole === "" || "{{ shift[4] }}" === selectedRole) {
-            let event = calendar.addEvent({
-                id: '{{ shift[0] }}',
-                title: '{{ shift[1] }} - {{ shift[3] }}',
-                start: '{{ shift[2] }}',
-                extendedProps: {
-                    shiftType: '{{ shift[3] }}',
-                    role: '{{ shift[4] }}'
+                    //set the css class based on shift type
+                    let shiftClass = getShiftClass(shiftType);
+                    info.el.classList.add(shiftClass);
                 }
             });
-            
-            let shiftType = '{{ shift[3] }}';
-            if (shiftType === "Early") {
-                event.setProp('classNames', ['shift-early']);
-            } else if (shiftType === "Late") {
-                event.setProp('classNames', ['shift-late']);
-            } else if (shiftType === "Normal") {
-                event.setProp('classNames', ['shift-normal']);
-            } else if (shiftType === "Holiday") {
-                event.setProp('classNames', ['shift-holiday']);
-            } else if (shiftType === "OOO") {
-                event.setProp('classNames', ['shift-OOO']);
-            }
-        }
-        
-    {% endfor %}
-});
 
-    });
-</script>
-{% endblock %}
+            calendar.render();
+
+            //collapsing menu
+            var coll = document.getElementsByClassName("collapsible");
+            for (let i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    content.style.display = (content.style.display === "block") ? "none" : "block";
+                });
+            }
+
+            let selectedDates = [];
+
+            // flatpickr for date range selection 
+            flatpickr("#shift_dates", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                onClose: function (dates) {
+                    selectedDates = dates;
+                    document.getElementById('shift_dates').value = (dates.length === 2) ? 
+                        `${dates[0].toISOString().split('T')[0]} to ${dates[1].toISOString().split('T')[0]}` : '';
+                }
+            });
+
+            document.getElementById('role').addEventListener('change', function () {
+                var selectedRole = this.value;
+                calendar.removeAllEvents();
+                {% for shift in shifts %}
+                    if (selectedRole === "" || "{{ shift[4] }}" === selectedRole) {
+                        calendar.addEvent({
+                            id: '{{ shift[0] }}',
+                            title: '',
+                            start: '{{ shift[2] }}',
+                            extendedProps: {
+                                shiftType: '{{ shift[3] }}',
+                                memberName: '{{ shift[1] }}',
+                                role: '{{ shift[4] }}'
+                            }
+                        });
+                    }
+                {% endfor %}
+            });
+        });
+    </script>
+</body>
+
+</html>

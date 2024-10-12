@@ -28,7 +28,7 @@ def ddos_prevention(source):
     if source not in hostlist:
         hostlist[source] = []
     hostlist[source] = [current_time for current_time in hostlist[source] if thetime - current_time < 60 ]
-    if len(hostlist[source]) >= 20:
+    if len(hostlist[source]) >= 50:
         return True
     hostlist[source].append(thetime)
     return False
@@ -68,7 +68,7 @@ def schedule_and_view_shifts():
     cursor.execute('SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, TeamMembers.role FROM Shifts JOIN TeamMembers ON Shifts.member_id = TeamMembers.id')
     shifts = cursor.fetchall()
 
-    cursor.execute('SELECT id, name FROM TeamMembers')
+    cursor.execute('SELECT id, name, role FROM TeamMembers')
     team_members = cursor.fetchall()
 
     cursor.execute('SELECT DISTINCT role FROM TeamMembers')
@@ -92,7 +92,7 @@ def delete_member(member_id):
     
     conn.commit()
     conn.close()
-    return redirect(url_for('manage_team_members'))
+    return redirect(url_for('schedule_and_view_shifts'))
 
 @app.route('/manage_team_members', methods=['GET', 'POST'])
 def manage_team_members():
@@ -106,11 +106,12 @@ def manage_team_members():
         cursor.execute("SELECT S.shift_date, S.shift_type, S.member_id, T.name FROM Shifts S JOIN TeamMembers T ON S.member_id = T.id")
         shifts = cursor.fetchall()
         events = [{'title': shift[1], 'start': shift[0], 'resourceId': str(shift[2]), 'memberName': shift[3], 'shiftType': shift[1]} for shift in shifts]
+        
         conn.close()
         return jsonify(events)
     
     elif request.args.get('data') == 'members':
-        cursor.execute("SELECT id, name FROM TeamMembers")
+        cursor.execute("SELECT id, nameFROM TeamMembers")
         members = cursor.fetchall()
         resources = [{'id': str(member[0]), 'title': member[1]} for member in members]
         conn.close()
@@ -131,7 +132,7 @@ def manage_team_members():
     cursor.execute('SELECT id, name, role FROM TeamMembers')
     team_members = cursor.fetchall()
     conn.close()
-    return render_template('team_members.html', team_members=team_members)
+    return redirect(url_for('schedule_and_view_shifts', team_members=team_members))
 
 
 

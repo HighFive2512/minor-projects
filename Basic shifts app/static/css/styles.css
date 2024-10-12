@@ -3,7 +3,6 @@ body {
     color: #b7ca64;
     font-family: Arial, sans-serif;
     padding: 20px;
-    font-size: 20px;
 }
 
 h1, h2 {
@@ -67,8 +66,8 @@ a:hover {
 }
 
 .submit-btn {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #274447;
+    color: yellow;
     padding: 12px 30px;
     font-size: 18px;
     cursor: pointer;
@@ -98,7 +97,7 @@ a:hover {
 
 .button-container a:hover,
 .button-container .submit-btn:hover {
-    background-color: #45a049;
+    background-color: #1c3a3e;
 }
 
 .form-container, .add-member-form {
@@ -122,6 +121,11 @@ a:hover {
     align-items: center; 
     gap: 20px; 
     margin: 20px 0; 
+}
+
+.form-container label, 
+.add-member-form label {
+    margin-right: 10px;
 }
 
 .form-group {
@@ -148,7 +152,6 @@ a:hover {
 
 .fc-event-title {
     font-size: 14px;
-    color: white;
 }
 
 .fc-event {
@@ -183,25 +186,17 @@ a:hover {
     transform: translateX(-1%);
     width: 100%;
 }
-.navbar {
-    text-align: center;
-    margin-bottom: 20px;
-}
 
-.navbar a {
-    margin: 0 15px;
-    font-size: 25px;
-}
 
 .agenda {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .agenda .agenda-point {
-    margin: 0 15px;
+    margin: 0 10px;
     display: flex;
     align-items: center; 
 }
@@ -219,17 +214,56 @@ a:hover {
     border-radius: 5px; 
 }
 
+.filter_role_dropdown {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 20px;
+    font-size: 16px;
+}
+
 .collapsible {
-    background-color: #777;
+    background-color: #1c3a3e;
+    color: #f7e03c;
     display: inline-block;
     padding: 18px;
-    width: 50%;
-    position: center;
+    position: relative;
+    align-self: center;
+    width: 40%;
+    text-align: center;
+    font-size: 16px;
+    border-color: #f7e03c;
   }
   
-  
-  .collapsed_menu {
-    padding: 0 18px;
+.collapsed_block {
+width: 100%; 
+margin: 0 auto; 
+text-align: center; 
+}
+
+.collapsed_table_menu, 
+.collaped_menu {
     display: none;
-    overflow: hidden;
-  }
+    width:30%;
+    transform: translateX(120%);
+    
+}
+
+.my-calendar {
+    max-height: 1200px;
+    margin: 0 auto;
+    overflow: auto; 
+    width:80%;
+
+}
+
+.filter-role-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    margin-top: 20px; 
+}
+
+.filter_role_dropdown {
+    margin-top: 10px; 
+}
