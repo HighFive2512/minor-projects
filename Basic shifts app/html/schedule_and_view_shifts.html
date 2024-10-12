@@ -3,7 +3,9 @@
 {% block title %}Schedule Shift{% endblock %}
 
 {% block content %}
-<h1>Schedule a New Shift</h2>
+<button type="button" class="collapsible">Schedule Shift</button>
+<div class = "collapsed_menu">
+<h2>Schedule a New Shift</h2>
 <form action="{{ url_for('schedule_and_view_shifts') }}" method="POST" id="shift-form" onsubmit="return validateForm()">
     <div class="form-container">
         <div class="form-group">
@@ -35,9 +37,10 @@
     <div class="button-container">
         <button type="submit" class="submit-btn">Schedule Shifts</button>
     </div>
+</div>
 </form>
 <label for="role">Filter by Role:</label>
-<select name="role" id="role">
+<select name="role" id="role" class="role_dropdown">
     <option value="">All Roles</option>
     {% for role in roles %}
         <option value="{{ role[0] }}">{{ role[0] }}</option>
@@ -60,6 +63,20 @@
 <div id="calendar"></div>
 
 <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+        content.style.display = "none";
+        } else {
+        content.style.display = "block";
+        }
+    });
+    }
     let selectedDates = [];
 
     flatpickr("#shift_dates", {
@@ -79,7 +96,7 @@
 
     function validateForm() {
         if (selectedDates.length !== 2) {
-            alert("Please select a complete date range.");
+            alert("sElect a date range.");
             return false;
         }
         return true;
@@ -152,6 +169,7 @@
                 event.setProp('classNames', ['shift-OOO']);
             }
         }
+        
     {% endfor %}
 });
 

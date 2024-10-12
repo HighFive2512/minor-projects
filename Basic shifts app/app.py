@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 from datetime import datetime, timedelta
+import time
 
 app = Flask(__name__, template_folder='html', static_folder='static')
 
@@ -19,8 +20,25 @@ def init_db():
 
 init_db()
 
+# hashmap for hosts that access the webpage 
+hostlist = {}
+#used for DDOS prevention - collects the IP of each connection and puts it into a hash. If the max amount of entries is more than X, it would return true, else false
+def ddos_prevention(source):
+    thetime = time.time()
+    if source not in hostlist:
+        hostlist[source] = []
+    hostlist[source] = [current_time for current_time in hostlist[source] if thetime - current_time < 60 ]
+    if len(hostlist[source]) >= 20:
+        return True
+    hostlist[source].append(thetime)
+    return False
+
+
 @app.route('/schedule_and_view_shifts', methods=['GET', 'POST'])
 def schedule_and_view_shifts():
+    conn_ip = request.remote_addr
+    if ddos_prevention(conn_ip):
+        return 'Connection limit exceeded, wait a minute and come back',400
     if request.method == 'POST':
         member_id = request.form['member_id']
         if 'shift_dates' not in request.form:
@@ -47,23 +65,21 @@ def schedule_and_view_shifts():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Fetch shifts
     cursor.execute('SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, TeamMembers.role FROM Shifts JOIN TeamMembers ON Shifts.member_id = TeamMembers.id')
     shifts = cursor.fetchall()
 
-    # Fetch team members for the dropdown
     cursor.execute('SELECT id, name FROM TeamMembers')
     team_members = cursor.fetchall()
 
-    # Fetch distinct roles for the dropdown
     cursor.execute('SELECT DISTINCT role FROM TeamMembers')
     roles = cursor.fetchall()
     
     conn.close()
-
-    # Pass team_members and roles to the template
     return render_template('schedule_and_view_shifts.html', shifts=shifts, team_members=team_members, roles=roles)
 
+@app.route('/')
+def init_page():
+    return redirect(url_for('schedule_and_view_shifts'))
 
 @app.route('/delete_member/<int:member_id>', methods=['POST'])
 def delete_member(member_id):
@@ -80,6 +96,9 @@ def delete_member(member_id):
 
 @app.route('/manage_team_members', methods=['GET', 'POST'])
 def manage_team_members():
+    conn_ip = request.remote_addr
+    if ddos_prevention(conn_ip):
+        return 'Connection limit exceeded, wait a minute and come back',400
     conn = get_db_connection()
     cursor = conn.cursor()
     
@@ -104,7 +123,7 @@ def manage_team_members():
         exists = cursor.fetchone()[0]
         if exists:
             conn.close()
-            return "Error: Team member already exists.", 400
+            return "Can't do: Team member already exists.", 400
         else:
             cursor.execute('INSERT INTO TeamMembers (name, role) VALUES (?, ?)', (name, role))
             conn.commit()
@@ -112,7 +131,6 @@ def manage_team_members():
     cursor.execute('SELECT id, name, role FROM TeamMembers')
     team_members = cursor.fetchall()
     conn.close()
-
     return render_template('team_members.html', team_members=team_members)
 
 
