@@ -5,11 +5,13 @@ import time
 
 app = Flask(__name__, template_folder='html', static_folder='static')
 
+#database connection
 def get_db_connection():
     conn = sqlite3.connect('shift_scheduler.db')
     conn.row_factory = sqlite3.Row  
     return conn
 
+#initializes/creates databases if they dont exist
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -20,14 +22,15 @@ def init_db():
 
 init_db()
 
-# hashmap for hosts that access the webpage 
+#hashmap for hosts that access the webpage 
 hostlist = {}
-#used for DDOS prevention - collects the IP of each connection and puts it into a hash. If the max amount of entries is more than X, it would return true, else false
+#used for DDOS prevention - collects the IP of each connection and puts it into a hash. 
+#If the max amount of entries is more than X, it would return true, else false
 def ddos_prevention(source):
     thetime = time.time()
     if source not in hostlist:
         hostlist[source] = []
-    hostlist[source] = [current_time for current_time in hostlist[source] if thetime - current_time < 60 ]
+    hostlist[source] = [current_time for current_time in hostlist[source] if thetime - current_time < 60]
     if len(hostlist[source]) >= 50:
         return True
     hostlist[source].append(thetime)
@@ -35,10 +38,11 @@ def ddos_prevention(source):
 
 
 @app.route('/schedule_and_view_shifts', methods=['GET', 'POST'])
+#scheduling and viewing shifts
 def schedule_and_view_shifts():
     conn_ip = request.remote_addr
     if ddos_prevention(conn_ip):
-        return 'Connection limit exceeded, wait a minute and come back',400
+        return 'Connection limit exceeded, wait a minute and come back', 400
     if request.method == 'POST':
         member_id = request.form['member_id']
         if 'shift_dates' not in request.form:
@@ -82,12 +86,12 @@ def init_page():
     return redirect(url_for('schedule_and_view_shifts'))
 
 @app.route('/delete_member/<int:member_id>', methods=['POST'])
+#deletes team member data and the corresponding scheduled shifts
 def delete_member(member_id):
     conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("DELETE FROM Shifts WHERE member_id = ?", (member_id,))
-
     cursor.execute("DELETE FROM TeamMembers WHERE id = ?", (member_id,))
     
     conn.commit()
@@ -95,10 +99,11 @@ def delete_member(member_id):
     return redirect(url_for('schedule_and_view_shifts'))
 
 @app.route('/manage_team_members', methods=['GET', 'POST'])
+# adds, deletes and retrieves member data
 def manage_team_members():
     conn_ip = request.remote_addr
     if ddos_prevention(conn_ip):
-        return 'Connection limit exceeded, wait a minute and come back',400
+        return 'Connection limit exceeded, wait a minute and come back', 400
     conn = get_db_connection()
     cursor = conn.cursor()
     
@@ -111,7 +116,7 @@ def manage_team_members():
         return jsonify(events)
     
     elif request.args.get('data') == 'members':
-        cursor.execute("SELECT id, nameFROM TeamMembers")
+        cursor.execute("SELECT id, name FROM TeamMembers")
         members = cursor.fetchall()
         resources = [{'id': str(member[0]), 'title': member[1]} for member in members]
         conn.close()
@@ -133,7 +138,6 @@ def manage_team_members():
     team_members = cursor.fetchall()
     conn.close()
     return redirect(url_for('schedule_and_view_shifts', team_members=team_members))
-
 
 
 if __name__ == '__main__':

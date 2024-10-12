@@ -16,7 +16,7 @@
 <body>
     <div class="collapsed_block">
         <button type="button" class="collapsible">Schedule Shift</button>
-        <div class="collapsed_menu"><br>
+        <div class="collapsed_menu" style="display: none;"><br>
             <h3>Schedule a New Shift</h3>
             <form action="{{ url_for('schedule_and_view_shifts') }}" method="POST" id="shift-form" onsubmit="return validateForm()">
                 <div class="form-container">
@@ -55,7 +55,7 @@
 
     <div class="collapsed_block">
         <button type="button" class="collapsible">Add or Remove Team Members</button>
-        <div class="collapsed_table_menu"><br>
+        <div class="collapsed_table_menu" style="display: none;"><br>
             <h3>Team Members</h3>
             <table>
                 <thead>
