@@ -71,7 +71,6 @@ a:hover {
     padding: 12px 30px;
     font-size: 18px;
     cursor: pointer;
-    border-radius: 4px;
     border: none;
 }
 
@@ -84,7 +83,7 @@ a:hover {
 }
 
 .button-container .submit-btn {
-    font-size: 20px;
+    font-size: 14px;
     padding: 14px 40px;
     border-radius: 6px;
     cursor: pointer;
@@ -92,7 +91,8 @@ a:hover {
 
 
 .button-container a:hover,
-.button-container .submit-btn:hover {
+.button-container .submit-btn:hover,
+.collapsible:hover {
     background-color: #6eb4bd;
 }
 
@@ -225,17 +225,17 @@ a:hover {
     background-color: #1c3a3e;
     color: #f7e03c;
     display: inline-block;
-    padding: 18px;
+    padding: 12px;
     position: relative;
     align-self: center;
     width: 40%;
     text-align: center;
-    font-size: 16px;
+    font-size: 13px;
     border-color: #f7e03c;
   }
   
 .collapsed_block {
-width: 100%; 
+width: 70%; 
 margin: 0 auto; 
 text-align: center; 
 }
