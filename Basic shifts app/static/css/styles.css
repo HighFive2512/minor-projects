@@ -250,12 +250,12 @@ text-align: center;
 
 
 .my-calendar {
-    max-height: 1200px;
+    height: auto;               /* Allow the calendar to expand based on content */
+    width: 80%;
     margin: 0 auto;
-    overflow: auto; 
-    width:80%;
-    
+    overflow: visible;          /* Display full content without scrolling */
 }
+
 
 .filter-role-container {
     display: flex;
@@ -266,4 +266,20 @@ text-align: center;
 
 .filter_role_dropdown {
     margin-top: 10px; 
+}
+/* FullCalendar header height */
+.fc-col-header {
+    height: 60px; /* Increase header height */
+    line-height: 60px; /* Center the text vertically */
+    font-size: 18px; /* Adjust font size */
+    margin: 0; /* Remove margin if any */
+    padding: 0; /* Remove padding if any */
+}
+
+
+
+/* Optional: Customize the size of events to avoid overflow */
+.fc-event {
+    min-height: 20px; /* Set a minimum height for events to avoid misalignment */
+    overflow: hidden; /* Hide any overflowing content */
 }

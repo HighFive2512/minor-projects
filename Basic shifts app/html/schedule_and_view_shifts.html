@@ -153,15 +153,17 @@
                     center: 'title',
                     right: 'dayGridWeek,dayGridMonth'
                 },
+                height: 'auto', // Makes the calendar height adjust based on content
+                dayMaxEventRows: false, // Allows all events to display without a limit per day
                 events: '/manage_team_members?data=events',
                 eventDidMount: function (info) {
                     let memberName = info.event.extendedProps.memberName;
                     let shiftType = info.event.extendedProps.shiftType;
 
-                    //insert the membername and role into the corresponding bar in the cale
+                    // Insert the member name and shift type into the calendar event element
                     info.el.querySelector('.fc-event-title').innerHTML = `<div>${memberName}</div><div>${shiftType}</div>`;
 
-                    //set the css class based on shift type
+                    // Apply the CSS class based on shift type
                     let shiftClass = getShiftClass(shiftType);
                     info.el.classList.add(shiftClass);
                 }
