@@ -47,8 +47,12 @@ def schedule_and_view_shifts():
         member_id = request.form['member_id']
         if 'shift_dates' not in request.form:
             return "Error: No date range selected.", 400
+        selected_date = [datetime.strptime(date.strip(), "%Y-%m-%d") for date in request.form['shift_dates'].split(" to ")]
+        if len(selected_date) > 1:
+            start_date, end_date = selected_date
+        else:
+            start_date = end_date = selected_date
 
-        start_date, end_date = [datetime.strptime(date.strip(), "%Y-%m-%d") for date in request.form['shift_dates'].split(" to ")]
         shift_dates = [(start_date + timedelta(days=i)).strftime("%Y-%m-%d") for i in range((end_date - start_date).days + 1) if (start_date + timedelta(days=i)).weekday() < 5]
         shift_type = request.form['shift_type']
 
