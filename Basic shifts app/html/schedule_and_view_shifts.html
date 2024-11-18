@@ -91,9 +91,9 @@
             <label for="role_add">Role:</label>
             <select id="role_add" name="role" required class="role_dropdown">
                 <option value="" disabled selected>Select Role</option>
-                {% for role in roles %}
-                    <option value="{{ role[0] }}">{{ role[0] }}</option>
-                {% endfor %}
+                    <option value="Ops">Ops</option>
+                    <option value="Dev">Dev</option>
+                    <option value="Mgmt">Mgmt</option>
             </select>
         </div>
 
@@ -101,9 +101,8 @@
             <label for="application_add">Application:</label>
             <select id="application_add" name="application" required class="application">
                 <option value="" disabled selected>Select Application</option>
-                {% for application in applications %}
-                    <option value="{{ application[0] }}">{{ application[0] }}</option>
-                {% endfor %}
+                   <option value="qweqwe">qweqwe</option>
+                    <option value="zxczxc">zxczxc</option>
             </select>
         </div>
 
