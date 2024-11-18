@@ -38,11 +38,13 @@ def ddos_prevention(source):
 
 
 @app.route('/schedule_and_view_shifts', methods=['GET', 'POST'])
-#scheduling and viewing shifts
 def schedule_and_view_shifts():
     conn_ip = request.remote_addr
     if ddos_prevention(conn_ip):
         return 'Connection limit exceeded, wait a minute and come back', 400
+
+    selected_role = request.args.get('role', '')  # Get role from URL parameter
+
     if request.method == 'POST':
         member_id = request.form['member_id']
         if 'shift_dates' not in request.form:
@@ -73,7 +75,10 @@ def schedule_and_view_shifts():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, TeamMembers.role FROM Shifts JOIN TeamMembers ON Shifts.member_id = TeamMembers.id')
+    if selected_role:  # Apply filter if role is selected
+        cursor.execute('SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, TeamMembers.role FROM Shifts JOIN TeamMembers ON Shifts.member_id = TeamMembers.id WHERE TeamMembers.role = ?', (selected_role,))
+    else:
+        cursor.execute('SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, TeamMembers.role FROM Shifts JOIN TeamMembers ON Shifts.member_id = TeamMembers.id')
     shifts = cursor.fetchall()
 
     cursor.execute('SELECT id, name, role FROM TeamMembers')
@@ -81,9 +86,10 @@ def schedule_and_view_shifts():
 
     cursor.execute('SELECT DISTINCT role FROM TeamMembers')
     roles = cursor.fetchall()
-    
+
     conn.close()
-    return render_template('schedule_and_view_shifts.html', shifts=shifts, team_members=team_members, roles=roles)
+    return render_template('schedule_and_view_shifts.html', shifts=shifts, team_members=team_members, roles=roles, selected_role=selected_role)
+
 
 @app.route('/')
 def init_page():
