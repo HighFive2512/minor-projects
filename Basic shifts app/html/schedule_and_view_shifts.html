@@ -33,7 +33,6 @@
                         <label for="shift_dates">Date Range:</label>
                         <input type="text" id="shift_dates" name="shift_dates" placeholder="Select date range" required readonly>
                     </div>
-
                     <div class="form-group">
                         <label for="shift_type">Shift Type:</label>
                         <select name="shift_type" required>
@@ -62,6 +61,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Role</th>
+                        <th>Application</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -70,6 +70,7 @@
                     <tr>
                         <td>{{ member[1] }}</td>
                         <td>{{ member[2] }}</td>
+                        <td>{{ member[3] }}</td>
                         <td>
                             <form action="{{ url_for('delete_member', member_id=member[0]) }}" method="POST" style="display:inline;">
                                 <button type="submit" style="background-color: #13100f; color: white; border: none; padding: 8px 12px; cursor: pointer;">Delete</button>
@@ -81,36 +82,59 @@
             </table>
 
             <h3>Add Team Member</h3>
-            <form action="{{ url_for('manage_team_members') }}" method="POST" class="add-member-form">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="role_add">Role:</label>
-                    <select id="role_add" name="role" required class="role_dropdown">
-                        <option value="" disabled selected>Select Role</option>
-                        <option value="Ops">Ops</option>
-                        <option value="Dev">Dev</option>
-                        <option value="Mgmt">Mgmt</option>
-                    </select>
-                </div>
-                <div class="button-container">
-                    <input type="submit" value="Add Member" class="submit-btn">
-                </div>
-            </form>
+    <form action="{{ url_for('manage_team_members') }}" method="POST" class="add-member-form">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="role_add">Role:</label>
+            <select id="role_add" name="role" required class="role_dropdown">
+                <option value="" disabled selected>Select Role</option>
+                {% for role in roles %}
+                    <option value="{{ role[0] }}">{{ role[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="application_add">Application:</label>
+            <select id="application_add" name="application" required class="application">
+                <option value="" disabled selected>Select Application</option>
+                {% for application in applications %}
+                    <option value="{{ application[0] }}">{{ application[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Add Member" class="submit-btn">
+        </div>
+    </form>
         </div>
     </div>
+        <div class="filter-container">
     <div class="filter-role-container">
-        <label for="role">Filter by Role:</label>
-        <select name="role" id="role" class="filter_role_dropdown">
-            <option value="">All Roles</option>
-            {% for role in roles %}
-                <option value="{{ role[0] }}">{{ role[0] }}</option>
-            {% endfor %}
-        </select>
+        <div class="filter-group">
+            <label for="role">Filter by Role:</label>
+            <select name="role" id="role" class="filter_role_dropdown">
+                <option value="">All Roles</option>
+                {% for role in roles %}
+                    <option value="{{ role[0] }}">{{ role[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="application">Filter by Application:</label>
+            <select name="application" id="application" class="filter_application_dropdown">
+                <option value="">All Applications</option>
+                {% for app in applications %}
+                    <option value="{{ app[0] }}">{{ app[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
-    
+</div>
     <div class="agenda">
         <div class="agenda-point">
             <span style="color: green;">&#9679;</span> Early Shift (06-15 UKT)
@@ -132,6 +156,7 @@
     <div id="calendar" class="my-calendar"></div>
 
 <script>
+// Function to get the shift class based on shift type
 function getShiftClass(shiftType) {
     switch (shiftType) {
         case "Early": return 'shift-early';
@@ -144,8 +169,10 @@ function getShiftClass(shiftType) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize calendar
     var calendarEl = document.getElementById('calendar');
     var roleFilter = document.getElementById('role');
+    var applicationFilter = document.getElementById('application');
 
     var allShifts = [
         {% for shift in shifts %}
@@ -156,7 +183,8 @@ document.addEventListener('DOMContentLoaded', function () {
             extendedProps: {
                 shiftType: '{{ shift[3] }}',
                 memberName: '{{ shift[1] }}',
-                role: '{{ shift[4] }}'
+                role: '{{ shift[4] }}',
+                application: '{{ shift[5] }}'
             }
         },
         {% endfor %}
@@ -173,14 +201,19 @@ document.addEventListener('DOMContentLoaded', function () {
         dayMaxEventRows: false,
         events: function(fetchInfo, successCallback, failureCallback) {
             var selectedRole = roleFilter.value;
-            var filteredEvents = selectedRole
-                ? allShifts.filter(event => selectedRole === '' || event.extendedProps.role === selectedRole)
-                : allShifts;
+            var selectedApplication = applicationFilter.value;
+
+            var filteredEvents = allShifts.filter(event =>
+                (selectedRole === '' || event.extendedProps.role === selectedRole) &&
+                (selectedApplication === '' || event.extendedProps.application === selectedApplication)
+            );
+
             successCallback(filteredEvents);
         },
         eventDidMount: function (info) {
             let memberName = info.event.extendedProps.memberName;
             let shiftType = info.event.extendedProps.shiftType;
+            let application = info.event.extendedProps.application;
 
             info.el.querySelector('.fc-event-title').innerHTML = `<div>${memberName}</div><div>${shiftType}</div>`;
 
@@ -189,19 +222,36 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Render the calendar
     calendar.render();
 
+    // Role and Application filter event listeners
+    roleFilter.addEventListener('change', function () {
+        calendar.refetchEvents();
+    });
+
+    applicationFilter.addEventListener('change', function() {
+        calendar.refetchEvents();
+    });
+
+    // Rest of the existing script (collapsible sections, flatpickr, etc.) remains the same
+});
+
+    // Collapsible sections functionality
     var coll = document.getElementsByClassName("collapsible");
     for (let i = 0; i < coll.length; i++) {
         coll[i].addEventListener("click", function () {
             this.classList.toggle("active");
             var content = this.nextElementSibling;
             content.style.display = (content.style.display === "block") ? "none" : "block";
+
+            // Save state of collapsible sections in localStorage
+            localStorage.setItem('scheduleShiftOpen', document.querySelector(".collapsed_block .collapsible.active") !== null);
         });
     }
 
+    // Flatpickr date range picker
     let selectedDates = [];
-
     flatpickr("#shift_dates", {
         mode: "range",
         dateFormat: "Y-m-d",
@@ -212,13 +262,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Restore the previous state of the page after reload
+    window.onload = function() {
+        // Check if a section was previously open
+        if (localStorage.getItem('scheduleShiftOpen') === 'true') {
+            var collapsedMenu = document.querySelector('.collapsed_block .collapsible');
+            collapsedMenu.classList.add('active');
+            collapsedMenu.nextElementSibling.style.display = "block";
+        }
+
+        // Restore selected member (if available)
+        var selectedMemberId = localStorage.getItem('selectedMemberId');
+        if (selectedMemberId) {
+            document.querySelector('select[name="member_id"]').value = selectedMemberId;
+        }
+    };
+
+    // Save the selected member ID to localStorage
+    document.querySelector('select[name="member_id"]').addEventListener('change', function() {
+        localStorage.setItem('selectedMemberId', this.value);
+    });
+
+    // Role filter functionality
     roleFilter.addEventListener('change', function () {
         calendar.refetchEvents();
     });
+    var applicationFilter = document.getElementById('application');
+applicationFilter.addEventListener('change', function() {
+    calendar.refetchEvents();
 });
 </script>
 
-    </script>
 </body>
 
 </html>

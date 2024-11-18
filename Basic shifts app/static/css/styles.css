@@ -48,7 +48,6 @@ h1, h2, h3 {
     transition: all 0.3s ease;
 }
 
-
 .collapsed_menu,
 .collapsed_table_menu {
     display: none;
@@ -69,6 +68,23 @@ form {
     border-radius: 8px;
     margin-top: 20px;
 }
+
+.add-member-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.add-member-form .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+}
+
 
 .form-container,
 .add-member-form {
@@ -160,7 +176,6 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #3b6e70;
     transition: all 0.3s ease;
 }
 
@@ -235,26 +250,45 @@ tr:hover {
     padding: 0;
 }
 
+.role_dropdown:focus {
+    outline: none;
+    border-color: #f7e03c;
+    box-shadow: 0 0 0 3px rgba(247, 224, 60, 0.3);
+}
+
 .filter-role-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
     width: 100%;
     margin: 20px 0;
+    gap: 20px;
     text-align: center;
 }
 
-.role_dropdown {
-    width: 300px;
-    height: 40px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
+.filter-group label {
+    color: #f7e03c;
+    margin-bottom: 8px;
+}
+
+.filter-group select {
+    background-color: #1c3a3e;
+    color: #b7ca64;
+    border: 1px solid #3b6e70;
+    border-radius: 6px;
+    padding: 10px;
+    width: 200px;
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .my-calendar {
     height: auto;
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     overflow: visible;
 }
@@ -271,3 +305,4 @@ tr:hover {
     display: block;
     margin: 15px 0;
 }
+
