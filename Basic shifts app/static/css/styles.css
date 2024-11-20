@@ -209,6 +209,7 @@ tr:hover {
     height: 40px;
     padding: 2px 5px;
     position: relative;
+    margin-bottom: 5px;
 }
 
 .fc-event.shift-early {
@@ -306,3 +307,26 @@ tr:hover {
     margin: 15px 0;
 }
 
+.date-range-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-range-container input[type="text"] {
+    flex-grow: 1;
+    min-width: 250px;
+    width: auto;
+}
+
+.date-range-toggle {``
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #f7e03c;
+}
+.date-range-toggle input[type="checkbox"] {
+    margin: 0;
+    width: 12px;
+    height: 12px;
+}
