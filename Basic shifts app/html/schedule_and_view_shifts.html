@@ -55,6 +55,8 @@
     <div class="collapsed_block">
         <button type="button" class="collapsible">Add or Remove Team Members</button>
         <div class="collapsed_table_menu" style="display: none;"><br>
+            <button type="button" class="collapsible">Remove Team Members</button>
+            <div class="collapsed_table_menu" style="display: none;"><br>
             <h3>Team Members</h3>
             <table>
                 <thead>
@@ -80,9 +82,11 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
 
             <h3>Add Team Member</h3>
     <form action="{{ url_for('manage_team_members') }}" method="POST" class="add-member-form">
+        <div class="form-container">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
@@ -105,8 +109,8 @@
                     <option value="zxczxc">zxczxc</option>
             </select>
         </div>
-
-        <div class="form-group">
+        </div>
+        <div class="button-container">
             <input type="submit" value="Add Member" class="submit-btn">
         </div>
     </form>
