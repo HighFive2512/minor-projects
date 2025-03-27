@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDTPRA Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('dash.static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="topper-navbar">
+        <ul>
+            <li><a href="{{ url_for('dash.all_tables_page') }}">Dashboard</a></li>
+        </ul>
+    </div>
+    <div class="top-navbar">
+        <ul>
+            <li><a href="{{ url_for('dash.all_tables_page') }}">All tables</a></li>
+        </ul>
+    </div>
+    <div class="cet-time">
+        <span class="refresh-indicator">Last refreshed at {{ modified_time }} UK Time</span>
+    </div>
+    <div class="title header">
+        <div class="DashTitle">
+            <h1>Risk & Analytics Operations Dashboard</h1>
+        </div>
+    </div>
+    <div class="container">
+        {% for application, table_list in tables.items() %}
+    <div class="application title">
+        <h1>{{ application }}</h1>
+    </div>
+    <div class="flex-container">
+        {% for table in table_list %}
+            <div class="table">
+                <h2>{{ table[0][0] }}</h2>  {# Query name #}
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in table[0][1:] %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in table[1:] %}
+                            <tr>
+                                {% for col in row %}
+                                    <td>{{ col }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+    </div>
+    
+    </div>
+    <script>
+        // Simple script to enhance table responsiveness
+        document.addEventListener('DOMContentLoaded', function () {
+            const tables = document.querySelectorAll('.table');
+            tables.forEach(table => {
+                const tableWidth = table.scrollWidth;
+                const containerWidth = table.parentElement.clientWidth;
+                if (tableWidth > containerWidth) {
+                    table.parentElement.style.overflowX = 'auto';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

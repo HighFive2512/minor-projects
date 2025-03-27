@@ -1,0 +1,7 @@
+Changed databae context to Kevin
+Table_Naruto_Error_Logs 
+Timestamp|Service|Error Type|Error Count|Severity|Resolution Status
+------------------------------------------------
+2024-03-25 | 12:00 | Authentication | Token Expired | 15 | Low | Resolved
+2024-03-25 | 13:00 | Data Service | Connection Timeout | 8 | Medium | In Progress
+2024-03-25 | 14:00 | Payment Gateway | Validation Error | 3 | Low | Resolved

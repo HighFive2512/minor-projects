@@ -1,0 +1,7 @@
+Changed databae context to Kevin
+Table_Naruto_Infrastructure 
+Resource|Total Capacity|Used|Free|Utilization %|Status
+------------------------------------------------
+2024-03-25 | CPU Cores | 64 | 38 | 26 | 59.4% | Normal
+2024-03-25 | RAM | 256 GB | 152 GB | 104 GB | 59.4% | Normal
+2024-03-25 | Storage | 10 TB | 6.2 TB | 3.8 TB | 62% | Normal

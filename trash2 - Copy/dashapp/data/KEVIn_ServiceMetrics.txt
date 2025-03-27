@@ -1,0 +1,13 @@
+Changed databae context to Kevin
+Table_KEVIn_Service_Metrics 
+Timestamp|Request Rate|Error Rate|Avg Response Time|P95 Latency|Health
+------------------------------------------------
+2024-03-25 | 12:00 | 1200 req/min | 0.5% | 125 ms | 350 ms | Good
+2024-03-25 | 13:00 | 1350 req/min | 0.7% | 140 ms | 400 ms | Good
+2024-03-25 | 14:00 | 1250 req/min | 0.6% | 130 ms | 370 ms | Good
+2024-03-25 | 12:00 | 1200 req/min | 0.5% | 125 ms | 350 ms | Good
+2024-03-25 | 13:00 | 1350 req/min | 0.7% | 140 ms | 400 ms | Good
+2024-03-25 | 14:00 | 1250 req/min | 0.6% | 130 ms | 370 ms | Good
+2024-03-25 | 12:00 | 1200 req/min | 0.5% | 125 ms | 350 ms | Good
+2024-03-25 | 13:00 | 1350 req/min | 0.7% | 140 ms | 400 ms | Good
+2024-03-25 | 14:00 | 1250 req/min | 0.6% | 130 ms | 370 ms | Good
