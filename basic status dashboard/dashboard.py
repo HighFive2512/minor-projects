@@ -1,8 +1,11 @@
 from flask import Flask, render_template
 import re
 import datetime
+import os
 
 app = Flask(__name__)
+script_path = os.path.dirname(__file__)
+os.chdir(script_path)
 
 def parse_tables(file_path, keyword):
     with open(file_path, 'r', encoding='utf-8') as file:

@@ -1,0 +1,6 @@
+{
+    "status": "hasd",
+    "memory_usage": 45.5,
+    "cpu_load": 22.3,
+    "last_updated": "2024-03-25 14:30:00"
+}

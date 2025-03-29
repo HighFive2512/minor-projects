@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDTPRA Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="top-navbar">
+    <ul>
+        <li><a href="/dashboard">Welcome Dashboard</a></li>
+        <li><a href="/All_tables">All tables</a></li>
+    </ul>
+</div>
+<div class="cet-time"><h3> As of {{ modified_time }} UK Time</h3></div>
+<div class="title_header">
+    <div class="DashTitle"><h1>Risk & Analytics Operations Semi-live Dashboard</h1></div>
+    <h2>Data is refreshed every 5 minutes</h2>
+</div>
+<div class="container">
+    {% for application in applications %}
+    <div class="application_title"><h1>{{ application }}</h1></div>
+    <div class="flex-container">
+        {% for table in tables %}
+        {% if application in table[0]|first %}
+        <div class="table-wrapper">
+            <div class="query_title"><h2>{{ table[0]|split_header }}</h2></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% for header in table[1]|splitpart() %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table[2:] %}
+                    <tr>
+                        {% for column in row|splitpart() %}
+                        <td>{{ column }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDTPRA Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    {% for application in applications %}
+    <div class="application_title"><h1>{{ application }}</h1></div>
+    <div class="flex-container">
+        {% for table in tables %}
+        {% if application in table[0] %}
+        <div class="table-wrapper">
+            <div class="query_title"><h2>{{ table[0] }}</h2></div>
+            
+            {% if table[1] and table[2] %}
+                {% if table[0].endswith('- Batch') %}
+                    <div class="batch-list-container">
+                        <div class="batch-list">
+                            {% for row in table[2] %}
+                            <div class="batch-item">
+                                <div class="batch-id">{{ row[0] }}</div>
+                                <div class="batch-count">{{ row[2] }}</div>
+                                <div class="batch-status 
+                                    {% if row[1].lower() == 'completed' %}batch-status-completed
+                                    {% elif row[1].lower() == 'pending' %}batch-status-pending
+                                    {% elif row[1].lower() == 'failed' %}batch-status-failed
+                                    {% endif %}">
+                                    {{ row[1] }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                {% for header in table[1] %}
+                                <th>{{ header }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in table[2] %}
+                            <tr>
+                                {% for cell in row %}
+                                <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% elif table[0].endswith('- Log') %}
+            <div class="log-container">
+                {% for i in range(table[2]|length) %}
+                <div class="log-line">
+                    <div class="log-line-text">{{ table[2][i] }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% elif 'Status (Healthy)' in table[0] %}
+            <div class="status-box healthy">
+                <div class="status-icon">✓</div>
+                <div class="status-content">
+                    <h3>System Status</h3>
+                    <p>All systems are operational and running smoothly</p>
+                </div>
+            </div>
+            {% elif 'Status (Unhealthy)' in table[0] %}
+            <div class="status-box unhealthy">
+                <div class="status-icon">!</div>
+                <div class="status-content">
+                    <h3>System Status Alert</h3>
+                    <p>Issues detected. Immediate attention required</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="status-box success">
+                <p>No errors detected</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</body>
+</html>
