@@ -1,4 +1,0 @@
-Application1
-Application2
-Application3
-Application4

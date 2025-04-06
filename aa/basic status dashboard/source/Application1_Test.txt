@@ -1,1 +1,0 @@
-Date|Transactions|Success Rate|Average Response Time|Errors

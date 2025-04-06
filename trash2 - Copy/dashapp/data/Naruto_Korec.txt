@@ -1,7 +1,0 @@
-Changed databae context to Kevin
-Table_Naruto_Application_Performance
-Date|CPU Usage %|Memory Usage %|Network I/O|Uptime|Status
-------------------------------------------------
-2024-03-25 | 12:00 | 45.2 | 62.3 | 1.5 MB/s | 99.99% | Healthy
-2024-03-25 | 13:00 | 48.7 | 65.1 | 1.7 MB/s | 99.99% | Healthy
-2024-03-25 | 14:00 | 50.3 | 67.5 | 1.6 MB/s | 99.99% | Warning

@@ -1,6 +1,0 @@
-Changed databae context to Kevin
-Table_Naruto_Network_Performance|Timestamp|Inbound Traffic|Outbound Traffic|Latency|Packet Loss|Status
-------------------------------------------------
-2024-03-25 | 12:00 | 500 Mbps | 450 Mbps | 12 ms | 0.01% | Excellent
-2024-03-25 | 13:00 | 550 Mbps | 500 Mbps | 15 ms | 0.02% | Excellent
-2024-03-25 | 14:00 | 520 Mbps | 470 Mbps | 13 ms | 0.01% | Excellent

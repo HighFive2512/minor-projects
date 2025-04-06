@@ -5,15 +5,11 @@ import time
 
 app = Flask(__name__, template_folder='html', static_folder='static')
 
-
-# database connection
 def get_db_connection():
     conn = sqlite3.connect('shift_scheduler.db')
     conn.row_factory = sqlite3.Row
     return conn
 
-
-# initializes/creates databases if they dont exist
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -69,10 +65,7 @@ def schedule_and_view_shifts():
     cursor = conn.cursor()
 
     query = '''
-       SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, 
-              TeamMembers.role, TeamMembers.application 
-       FROM Shifts 
-       JOIN TeamMembers ON Shifts.member_id = TeamMembers.id 
+       SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, TeamMembers.role, TeamMembers.application FROM Shifts JOIN TeamMembers ON Shifts.member_id = TeamMembers.id 
        '''
 
     if selected_role:
@@ -96,10 +89,7 @@ def schedule_and_view_shifts():
     applications = cursor.fetchall()
 
     query = '''
-    SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, 
-           TeamMembers.role, TeamMembers.application 
-    FROM Shifts 
-    JOIN TeamMembers ON Shifts.member_id = TeamMembers.id 
+    SELECT Shifts.id, TeamMembers.name, Shifts.shift_date, Shifts.shift_type, TeamMembers.role, TeamMembers.application FROM Shifts JOIN TeamMembers ON Shifts.member_id = TeamMembers.id 
     '''
 
     if selected_role:
